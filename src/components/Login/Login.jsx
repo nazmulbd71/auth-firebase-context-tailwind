@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Providers/AuthProviders';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 
 const Login = () => {
-    const { signIn } = useContext(AuthContext)
+    const { signIn, signInWithGoogle } = useContext(AuthContext)
     const handleLogin = (event) => {
         event.preventDefault();
         const form = event.target
@@ -22,6 +24,20 @@ const Login = () => {
             })
 
     }
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+            .then(result => {
+                const loggedUser = result.user
+                console.log(loggedUser)
+                form.reset()
+            })
+
+            .catch(error => {
+                console.log(error)
+            })
+    }
+
+
     return (
         <div className="hero min-h-screen bg-base-200">
             <div className="hero-content flex-col lg:flex-row-reverse">
@@ -47,6 +63,10 @@ const Login = () => {
                         </div>
                         <div className="form-control mt-6">
                             <button className="btn btn-primary">Login</button>
+                        </div>
+
+                        <div className="form-control mt-6">
+                            <button onClick={handleGoogleSignIn} className="btn btn-primary"> <FontAwesomeIcon icon={faCoffee} />   Google Sign In</button>
                         </div>
                     </form>
                     <Link className='ml-32' to="/register"><button className="btn btn-link">Sign Up</button></Link>
